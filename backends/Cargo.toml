@@ -1,0 +1,26 @@
+[package]
+name = "backends"
+version = "0.1.0"
+authors = ["Christoph Grabo <asaaki@mannaz.cc>"]
+edition = "2018"
+
+[features]
+default = []
+
+[dependencies]
+tide = "0.11"
+async-std = { version = "1.6", features = ["attributes"] }
+async-tls = "0.7"
+indoc = "0.3"
+jemallocator = "0.3"
+mime = "0.3"
+http-types = "2.2"
+femme = "2.1"
+lazy_static = "1.4"
+rand ="0.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+jsonwebtoken = "7.2"
+chrono = { version = "0.4", features = ["serde"] }
+time = { version = "0.2", features = ["serde"] }
+cookie = { version = "0.14", features = ["percent-encode"] }

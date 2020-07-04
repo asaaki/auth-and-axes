@@ -1,0 +1,81 @@
+version: "3.8"
+services:
+
+  frontend:
+    image: nginx:1.19-alpine
+    container_name: frontend-server
+    ports:
+     - "8081:8081"
+    environment:
+      - NGINX_PORT=8081
+    volumes:
+      - ./frontend/public:/public:delegated
+      - ./frontend/config/nginx:/etc/nginx/conf.d:ro
+      - ./data:/data:ro
+    depends_on:
+      - api-ssl
+
+  api-ssl:
+    image: nginx:1.19-alpine
+    container_name: api-ssl-server
+    ports:
+     - "8085:8085"
+    environment:
+      - NGINX_PORT=8085
+    volumes:
+      - ./ssl-proxy/api:/etc/nginx/conf.d:ro
+      - ./data:/data:ro
+    depends_on:
+      - api
+
+  id-ssl:
+    image: nginx:1.19-alpine
+    container_name: id-ssl-server
+    ports:
+     - "8099:8099"
+    environment:
+      - NGINX_PORT=8099
+    volumes:
+      - ./ssl-proxy/id:/etc/nginx/conf.d:ro
+      - ./data:/data:ro
+    depends_on:
+      - id
+
+  api: &backendtemplate
+    image: auth-n-axes/api
+    container_name: api-server
+    command: [/bin/bash, -c, '/app/bin/backends; exec /bin/bash']
+    build: &backendbuild
+      context: backends
+      # target: api-server
+      args:
+        - RELEASE_VERSION=${GITHUB_SHA:-dev}
+    tty: true
+    stdin_open: true
+    environment:
+      - PORT=8085
+      # AWS_ACCESS_KEY_ID: 'DUMMYIDEXAMPLE'
+      # AWS_SECRET_ACCESS_KEY: 'DUMMYEXAMPLEKEY'
+    volumes:
+      - ./backends:/source:delegated
+      - ./data:/data:ro
+    depends_on:
+      - id
+
+  id:
+    <<: *backendtemplate
+    container_name: id-server
+    environment:
+      - PORT=8099
+    depends_on: []
+
+  # redis:
+  #   image: redis:6-alpine
+
+  # dynamodb:
+  #   image: amazon/dynamodb-local:latest
+  #   ports:
+  #   - "8000:8000"
+
+  # postgres:
+  #   image: postgres:12-alpine

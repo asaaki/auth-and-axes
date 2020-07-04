@@ -1,0 +1,17 @@
+# for mkcert:
+
+$ mkcert unicorn.test "*.unicorn.test" rainbow.test "*.rainbow.test" localhost 127.0.0.1 ::1
+
+### rainbow.test
+127.0.0.1 unicorn.test www.unicorn.test web.unicorn.test
+127.0.0.1 login.unicorn.test register.unicorn.test id.unicorn.test
+127.0.0.1 api.unicorn.test app.unicorn.test backend.unicorn.test db.unicorn.test
+127.0.0.1 cdn.unicorn.test assets.unicorn.test static.unicorn.test files.unicorn.test
+127.0.0.1 cluster.unicorn.test admin.unicorn.test info.unicorn.test
+
+### rainbow.test
+127.0.0.1 rainbow.test www.rainbow.test web.rainbow.test
+127.0.0.1 login.rainbow.test register.rainbow.test id.rainbow.test
+127.0.0.1 api.rainbow.test app.rainbow.test backend.rainbow.test db.rainbow.test
+127.0.0.1 cdn.rainbow.test assets.rainbow.test static.rainbow.test files.rainbow.test
+127.0.0.1 cluster.rainbow.test admin.rainbow.test info.rainbow.test
