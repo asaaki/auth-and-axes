@@ -18,6 +18,7 @@ use {
 
 static DEFAULT_PORT: &str = "8085";
 
+// https://www.iana.org/assignments/jwt/jwt.xhtml
 #[derive(Debug, Serialize, Deserialize)]
 struct Claims {
     aud: String, // Optional. Audience
@@ -26,6 +27,8 @@ struct Claims {
     iss: String, // Optional. Issuer
     // nbf: usize,          // Optional. Not Before (as UTC timestamp)
     sub: String, // Optional. Subject (whom token refers to)
+    // jti: String, // JWT ID - unique ID per token
+    // scope: String, // "token.refresh api.all assets.view"
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -158,7 +161,7 @@ async fn login_handler(mut req: Request<()>) -> TideResult {
                 refresh_token: refresh_token,
                 work_token: None,
                 view_token: None,
-                message: Some("already logged in".into()),
+                message: Some("new login - hello!".into()),
             };
 
             let mut resp = Response::new(StatusCode::Ok);
